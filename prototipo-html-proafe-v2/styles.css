@@ -1,0 +1,2201 @@
+/*
+ * Protótipo navegável — Financeiro · PROAFE (FLUXO002).
+ *
+ * Tokens: os nomes e valores dos variables-<origem>.json de design-system/figma,
+ * com a convenção --color-* / --spacing-scale-* do _tokens.scss do sie2-web.
+ * Componentes: os do [ds] Componentes v0.1.0, família de 16 px (DEC006), e os
+ * compostos do SIE (cabeçalho, breadcrumb, menu lateral, tabela com texto-th,
+ * paginação, histórico).
+ */
+
+:root {
+  /* cor — semânticos */
+  --color-primary-background: #ebf2ff;
+  --color-primary-muted: #8bb3f7;
+  --color-primary-surfaces: #6495ed;
+  --color-primary-interactive-area: #557cf2;
+  --color-primary-interactive: #4264cd;
+  --color-primary-dark: #2d46a0;
+  --color-primary-headings: #1d3374;
+
+  --color-neutral-background: #f1f2f4;
+  --color-neutral-light: #dcdee4;
+  --color-neutral-muted: #9da5b3;
+  --color-neutral-base: #626f86;
+  --color-neutral-dark: #44546f;
+  --color-neutral-body: #091e42;
+
+  --color-highlight-background: #fff1ec; /* orange-5 (DEC024) */
+  --color-highlight-muted: #ffbca3;
+  --color-highlight-focus: #ff7f50;
+  --color-highlight-dark: #b1360d;
+
+  --color-danger-background: #fef1f3;
+  --color-danger-muted: #f7a5b6;
+  --color-danger-base: #dc143c;
+  --color-danger-dark: #970e29;
+
+  --color-success-background: #eff5ef;
+  --color-success-muted: #9ec69e;
+  --color-success-base: #4d824d;
+  --color-success-dark: #315331;
+
+  --color-warning-background: #fff8d1;
+  --color-warning-muted: #ffe975;
+  --color-warning-base: #f5c000;
+  --color-warning-dark: #996c0b;
+
+  --color-white: #ffffff;
+
+  /* espaçamento */
+  --spacing-scale-half: 4px;
+  --spacing-scale-base: 8px;
+  --spacing-scale-baseh: 12px;
+  --spacing-scale-2x: 16px;
+  --spacing-scale-2xh: 20px;
+  --spacing-scale-3x: 24px;
+  --spacing-scale-3xh: 28px;
+  --spacing-scale-4x: 32px;
+  --spacing-scale-5x: 40px;
+  --spacing-scale-6x: 48px;
+  --spacing-scale-7x: 56px;
+  --spacing-scale-8x: 64px;
+
+  /* tipografia (DEC027) */
+  --font-family-base: "Noto Sans", "Segoe UI", Roboto, Arial, sans-serif;
+  --font-size-scale-down-03: 0.625rem;
+  --font-size-scale-down-02: 0.75rem;
+  --font-size-scale-down-01: 0.875rem;
+  --font-size-scale-base: 1rem;
+  --font-size-scale-up-01: 1.25rem;
+  --font-size-scale-up-02: 1.5rem;
+  --font-size-scale-up-03: 2rem;
+  --font-size-scale-up-04: 2.5rem;
+
+  /* camadas */
+  --shadow-camada-2: 0 0 8px rgba(9, 30, 66, 0.1), 0 4px 4px rgba(9, 30, 66, 0.15);
+  --shadow-camada-3: 0 0 12px rgba(9, 30, 66, 0.1), 0 8px 8px rgba(9, 30, 66, 0.15);
+
+  /* foco: anel laranja de 2 px (DEC010) */
+  --focus-ring: 0 0 0 2px var(--color-highlight-focus);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-scale-base);
+  line-height: 1.45;
+  color: var(--color-neutral-body);
+  background: var(--color-white);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 700;
+}
+
+button {
+  font-family: inherit;
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.container-fluid {
+  width: 100%;
+  padding: 0 var(--spacing-scale-5x);
+}
+
+/* ─── Barra do protótipo — não faz parte da tela ─────────────────────────── */
+
+.prototipo-barra {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-scale-2x);
+  flex-wrap: wrap;
+  padding: var(--spacing-scale-base) var(--spacing-scale-5x);
+  background: var(--color-neutral-dark);
+  color: var(--color-white);
+  font-size: var(--font-size-scale-down-01);
+}
+
+.prototipo-barra strong {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: var(--font-size-scale-down-02);
+}
+
+.prototipo-barra label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-scale-base);
+}
+
+.prototipo-barra select {
+  font: inherit;
+  padding: 2px var(--spacing-scale-base);
+  border-radius: 4px;
+  border: 0;
+}
+
+/* ─── Header (Cabeçalho_SIE_SMED) ─────────────────────────────────────────── */
+
+.header {
+  height: 56px;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  border-bottom: 4px solid var(--color-neutral-background);
+  background: var(--color-white);
+}
+
+.header__marca {
+  display: flex;
+  align-items: center;
+}
+
+.header__marca img {
+  height: 32px;
+  width: auto;
+}
+
+.header > nav {
+  display: flex;
+  align-items: stretch;
+}
+
+.header__nav {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  gap: var(--spacing-scale-5x);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.header__nav a {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-scale-base);
+  height: 100%;
+  padding: 0 var(--spacing-scale-baseh);
+  color: var(--color-neutral-body);
+  text-decoration: none;
+  border-bottom: 4px solid transparent;
+  margin-bottom: -4px;
+}
+
+.header__nav a:hover {
+  color: var(--color-primary-interactive);
+}
+
+.header__nav a[aria-current="page"] {
+  font-weight: 700;
+  border-bottom-color: var(--color-primary-interactive-area);
+}
+
+.header__nav .fa-chevron-down {
+  font-size: 0.7em;
+}
+
+.header__usuario {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-scale-base);
+  text-align: right;
+}
+
+.header__usuario-nome {
+  font-size: var(--font-size-scale-down-01);
+  line-height: 1.2;
+}
+
+.header__usuario-escola {
+  font-size: var(--font-size-scale-down-03);
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  color: var(--color-neutral-dark);
+  text-transform: uppercase;
+}
+
+.avatar {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #2fbcb7; /* cyan-30 — exceção de primitiva do avatar (DEC009) */
+  color: var(--color-white);
+  font-size: var(--font-size-scale-down-03);
+  font-weight: 700;
+}
+
+/* ─── Breadcrumb + cabeçalho de página ────────────────────────────────────── */
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-scale-baseh);
+  margin: var(--spacing-scale-baseh) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--font-size-scale-down-02);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.breadcrumb li {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-scale-baseh);
+}
+
+.breadcrumb li + li::before {
+  content: "\f101"; /* angles-right */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  color: var(--color-neutral-muted);
+}
+
+.breadcrumb a {
+  color: var(--color-primary-interactive);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+.breadcrumb [aria-current="page"] {
+  color: var(--color-neutral-dark);
+}
+
+.page-header {
+  margin: var(--spacing-scale-3x) 0 var(--spacing-scale-3x);
+}
+
+.page-title {
+  font-size: var(--font-size-scale-up-04);
+  line-height: 1.15;
+  color: var(--color-primary-surfaces);
+}
+
+.page-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-scale-4x);
+  margin-top: var(--spacing-scale-baseh);
+  align-items: center;
+}
+
+.page-meta__rotulo {
+  color: var(--color-neutral-dark);
+  margin-right: var(--spacing-scale-base);
+}
+
+/* ─── Layout com menu lateral ─────────────────────────────────────────────── */
+
+/* Como no Figma: menu de 281px, 24px, divisor de 4px (1px #DCDEE4 + 3px
+   #F1F2F4) que vai até o fim do conteúdo, 24px e o conteúdo. */
+.layout {
+  display: grid;
+  grid-template-columns: 309px 1fr;
+  gap: 0;
+  padding-bottom: var(--spacing-scale-5x);
+  flex: 1;
+}
+
+.layout > nav {
+  position: relative;
+  padding-right: 28px;
+}
+
+.layout > nav::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(to right, var(--color-neutral-light) 0 1px, var(--color-neutral-background) 1px 4px);
+}
+
+.menu-lateral {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu-lateral a {
+  display: block;
+  padding: var(--spacing-scale-baseh) var(--spacing-scale-3x);
+  color: var(--color-primary-interactive);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.menu-lateral a:hover {
+  background: var(--color-primary-background);
+}
+
+.menu-lateral a[aria-current="page"] {
+  background: var(--color-neutral-background);
+  color: var(--color-primary-dark);
+}
+
+.menu-lateral__grupo {
+  padding: var(--spacing-scale-2x) var(--spacing-scale-3x) var(--spacing-scale-half);
+  font-size: var(--font-size-scale-down-03);
+  font-weight: 800;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-neutral-base);
+}
+
+.menu-lateral__sub a {
+  padding-left: var(--spacing-scale-5x);
+}
+
+.conteudo {
+  padding-left: var(--spacing-scale-3x);
+  min-width: 0;
+}
+
+.conteudo__titulo {
+  font-size: var(--font-size-scale-up-03);
+  color: var(--color-primary-headings);
+  line-height: 1.2;
+}
+
+/* ─── Tabs (tabs - 16px · tab item) ───────────────────────────────────────── */
+
+.tabs {
+  display: flex;
+  gap: var(--spacing-scale-2x);
+  margin: var(--spacing-scale-3x) 0 var(--spacing-scale-4x);
+  padding: 0;
+  border-bottom: 1px solid var(--color-neutral-light);
+}
+
+.tab-item {
+  position: relative;
+  min-height: 56px;
+  padding: 0 var(--spacing-scale-3x);
+  border: 0;
+  background: transparent;
+  color: var(--color-neutral-body);
+  font-size: var(--font-size-scale-base);
+  cursor: pointer;
+}
+
+.tab-item:hover {
+  color: var(--color-primary-interactive);
+}
+
+.tab-item[aria-selected="true"] {
+  font-weight: 700;
+}
+
+.tab-item[aria-selected="true"]::after {
+  content: "";
+  position: absolute;
+  left: var(--spacing-scale-3x);
+  right: var(--spacing-scale-3x);
+  bottom: -1px;
+  height: 4px;
+  background: var(--color-primary-interactive-area);
+}
+
+.tab-item[aria-selected="true"]:hover {
+  color: var(--color-primary-interactive);
+}
+
+/* ─── Seção (section-header) ──────────────────────────────────────────────── */
+
+/* O espaço entre as seções vem do próprio título, como no Figma (font-type h4/h5). */
+.secao + .secao {
+  margin-top: 0;
+}
+
+.secao__cabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-scale-2x);
+  margin-bottom: var(--spacing-scale-2x);
+}
+
+/* Título de seção = font-type h4 do Figma: 24px, Noto Sans Display SemiBold,
+   115%, 32px acima e 16px abaixo. h5 (subseções): 20px, 28px acima. */
+.secao__titulo {
+  margin: 0;
+  padding: var(--spacing-scale-4x) 0 var(--spacing-scale-2x);
+  font-family: "Noto Sans Display", "Noto Sans", sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--color-primary-headings);
+}
+
+.secao__titulo--h5 {
+  padding-top: 28px;
+  font-size: 20px;
+}
+
+/* Com botão ao lado (Conta Bancária › Editar), o espaçamento passa para o cabeçalho. */
+.secao__cabecalho:has(> .secao__titulo) {
+  margin-bottom: 0;
+  padding: var(--spacing-scale-4x) 0 var(--spacing-scale-2x);
+}
+.secao__cabecalho > .secao__titulo {
+  padding: 0;
+}
+/* O botão (40px) não aumenta a altura do cabeçalho: o título mantém 32px acima e 16px abaixo. */
+.secao__cabecalho:has(> .secao__titulo) > .btn {
+  margin-block: -6px;
+}
+/* O último elemento da seção não soma margem: o próximo título já traz os 32px. */
+.secao > :last-child {
+  margin-bottom: 0;
+}
+
+.secao__acoes {
+  display: flex;
+  gap: var(--spacing-scale-base);
+}
+
+.texto-auxiliar {
+  margin: var(--spacing-scale-base) 0 0;
+  font-size: var(--font-size-scale-down-01);
+  color: var(--color-neutral-base);
+}
+
+.estado-vazio {
+  margin: 0;
+  padding: var(--spacing-scale-3x);
+  background: var(--color-neutral-background);
+  color: var(--color-neutral-dark);
+}
+
+/* ─── Campos de leitura (campo-leitura) ───────────────────────────────────── */
+
+.campos-leitura {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-scale-3x) var(--spacing-scale-6x);
+  margin: 0;
+}
+
+.campos-leitura dt {
+  font-weight: 600;
+  color: var(--color-primary-headings);
+  margin-bottom: var(--spacing-scale-base);
+}
+
+.campos-leitura dd {
+  margin: 0;
+}
+
+/* ─── Button (button - 16px) ──────────────────────────────────────────────── */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-scale-base);
+  height: 40px;
+  padding: 0 var(--spacing-scale-2x);
+  border: 1px solid transparent;
+  border-radius: 0;
+  font-size: var(--font-size-scale-base);
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.btn--primary {
+  background: var(--color-primary-interactive-area);
+  color: var(--color-white);
+}
+
+.btn--primary:hover {
+  background: var(--color-primary-interactive);
+  border-color: var(--color-primary-dark);
+}
+
+.btn--primary:active {
+  background: var(--color-primary-dark);
+}
+
+.btn--secondary {
+  background: var(--color-white);
+  color: var(--color-primary-interactive);
+  border-color: var(--color-primary-surfaces);
+}
+
+.btn--secondary:hover {
+  border-color: var(--color-primary-interactive);
+  border-width: 2px;
+  padding: 0 calc(var(--spacing-scale-2x) - 1px);
+}
+
+.btn--secondary:active,
+.btn--tertiary:active {
+  background: var(--color-primary-background);
+}
+
+.btn--tertiary {
+  background: transparent;
+  color: var(--color-primary-interactive);
+}
+
+.btn--tertiary:hover {
+  border-color: var(--color-primary-background);
+}
+
+.btn--circle {
+  width: 40px;
+  padding: 0;
+  border-radius: 50%;
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn:focus-visible {
+  box-shadow: none;
+  outline: 2px solid var(--color-highlight-focus);
+  outline-offset: 0;
+}
+
+/* ─── Tag (tag - 16px) ────────────────────────────────────────────────────── */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: var(--font-size-scale-down-01);
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.tag--default { background: var(--color-neutral-base); color: var(--color-white); }
+.tag--primary { background: var(--color-primary-surfaces); color: var(--color-white); }
+.tag--success { background: var(--color-success-base); color: var(--color-white); }
+.tag--danger { background: var(--color-danger-base); color: var(--color-white); }
+.tag--default-light { background: var(--color-neutral-background); color: var(--color-neutral-dark); }
+.tag--success-light { background: var(--color-neutral-background); color: var(--color-success-dark); }
+.tag--danger-light { background: var(--color-neutral-background); color: var(--color-danger-dark); }
+
+/* ─── Alert ───────────────────────────────────────────────────────────────── */
+
+.alert {
+  display: flex;
+  gap: var(--spacing-scale-2x);
+  padding: var(--spacing-scale-2xh) var(--spacing-scale-2xh);
+  border: 2px solid;
+  margin-bottom: var(--spacing-scale-3x);
+}
+
+.alert__icone {
+  font-size: var(--font-size-scale-up-01);
+  line-height: 1.4;
+}
+
+.alert__titulo {
+  margin: 0 0 var(--spacing-scale-half);
+  font-size: var(--font-size-scale-up-01);
+  font-weight: 700;
+}
+
+.alert__corpo {
+  margin: 0;
+}
+
+.alert--warning {
+  background: var(--color-warning-background);
+  border-color: var(--color-warning-base);
+}
+
+.alert--warning .alert__titulo,
+.alert--warning .alert__icone { color: var(--color-warning-dark); }
+
+.alert--danger {
+  background: var(--color-danger-background);
+  border-color: var(--color-danger-base);
+}
+
+.alert--danger .alert__titulo,
+.alert--danger .alert__icone { color: var(--color-danger-dark); }
+
+/* ─── Filtros: select multi e checkbox (select - 16px · checkbox - 16px) ──── */
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--spacing-scale-2x) var(--spacing-scale-4x);
+  margin-bottom: var(--spacing-scale-3x);
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-scale-base);
+}
+
+.campo__rotulo {
+  font-weight: 600;
+  color: var(--color-primary-headings);
+}
+
+.select {
+  position: relative;
+  width: 320px;
+}
+
+.select__gatilho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-scale-base);
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--spacing-scale-baseh);
+  border: 1px solid var(--color-neutral-muted);
+  background: var(--color-white);
+  color: var(--color-neutral-body);
+  font-size: var(--font-size-scale-base);
+  text-align: left;
+  cursor: pointer;
+}
+
+.select__gatilho:hover {
+  border-color: var(--color-primary-interactive-area);
+}
+
+.select__gatilho[aria-expanded="true"] {
+  border: 2px solid var(--color-highlight-focus);
+  padding: 0 calc(var(--spacing-scale-baseh) - 1px);
+}
+
+.select__valor {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select__valor--placeholder {
+  color: var(--color-neutral-base);
+}
+
+.select__mais {
+  font-weight: 700;
+}
+
+.select__limpar {
+  border: 0;
+  background: transparent;
+  color: var(--color-neutral-dark);
+  padding: 0 var(--spacing-scale-half);
+  cursor: pointer;
+}
+
+.select__seta {
+  color: var(--color-primary-interactive);
+  font-size: 0.8em;
+}
+
+.select__painel {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  padding: var(--spacing-scale-base) 0;
+  background: var(--color-white);
+  box-shadow: var(--shadow-camada-2);
+}
+
+.select__painel[hidden] {
+  display: none;
+}
+
+.select__info {
+  margin: 0 var(--spacing-scale-baseh) var(--spacing-scale-base);
+  padding-bottom: var(--spacing-scale-base);
+  border-bottom: 1px solid var(--color-neutral-light);
+  font-size: var(--font-size-scale-down-02);
+  color: var(--color-neutral-base);
+}
+
+.select__opcao {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-scale-base);
+  padding: var(--spacing-scale-base) var(--spacing-scale-baseh);
+  cursor: pointer;
+}
+
+.select__opcao:hover {
+  background: var(--color-primary-background);
+}
+
+.select__opcao--todos {
+  font-weight: 700;
+}
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-scale-base);
+  min-height: 40px;
+  cursor: pointer;
+}
+
+.checkbox input {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border: 1px solid var(--color-neutral-base);
+  background: var(--color-white);
+  display: inline-grid;
+  place-content: center;
+  cursor: pointer;
+  flex: none;
+}
+
+.checkbox:hover input,
+.select__opcao:hover input {
+  border-color: var(--color-primary-interactive-area);
+}
+
+.checkbox input:checked,
+.checkbox input:indeterminate {
+  background: var(--color-primary-interactive-area);
+  border-color: var(--color-primary-interactive-area);
+}
+
+.checkbox input:checked::before {
+  content: "\f00c";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 10px;
+  color: var(--color-white);
+}
+
+.checkbox input:indeterminate::before {
+  content: "";
+  width: 8px;
+  height: 2px;
+  background: var(--color-white);
+}
+
+.checkbox input:focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
+/* ─── Tabela (shared/tabela + texto-th) ───────────────────────────────────── */
+
+.tabela {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Cabeçalho como o table-cell (th) do Figma: 16px nos quatro lados (48px de
+   altura), 12px/15px, espaçamento de 1,5px, Regular; Bold só na coluna ordenada. */
+.tabela thead th {
+  padding: var(--spacing-scale-2x);
+  border-bottom: 2px solid var(--color-neutral-light);
+  text-align: left;
+  font-size: var(--font-size-scale-down-02);
+  font-weight: 400;
+  line-height: 15px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--color-neutral-body);
+  white-space: nowrap;
+}
+
+.tabela td {
+  padding: var(--spacing-scale-2x);
+  border-bottom: 1px solid var(--color-neutral-light);
+  vertical-align: middle;
+}
+
+.tabela tbody tr:hover {
+  background: var(--color-neutral-background);
+}
+
+.tabela .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.tabela th.num .th-ordenavel {
+  justify-content: flex-end;
+}
+
+.tabela .acoes {
+  width: 1%;
+  text-align: right;
+  white-space: nowrap;
+  padding-top: var(--spacing-scale-half);
+  padding-bottom: var(--spacing-scale-half);
+}
+
+.tabela__vazio td {
+  text-align: center;
+  color: var(--color-neutral-dark);
+  padding: var(--spacing-scale-4x);
+}
+
+.tabela tbody tr.tabela__vazio:hover {
+  background: transparent;
+}
+
+.th-ordenavel {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-scale-half);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.th-ordenavel .fa-solid {
+  color: var(--color-primary-surfaces);
+  font-size: 0.9em;
+}
+
+.tabela thead th[aria-sort="ascending"],
+.tabela thead th[aria-sort="descending"] {
+  font-weight: 700;
+}
+
+.celula-secundaria {
+  display: block;
+  font-size: var(--font-size-scale-down-01);
+  color: var(--color-neutral-base);
+}
+
+.linha-extinta td {
+  color: var(--color-neutral-base);
+}
+
+/* ─── Paginação (paginacao — Sala de Aula, DEC005) ────────────────────────── */
+
+/* Como o componente paginacao do Figma: sem fundo e sem borda, 20px abaixo da
+   tabela, 16px de padding, grupos com 16px entre os itens, divisor de 2px × 32px
+   e setas de 40px × 32px, uma encostada na outra. */
+.paginacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-scale-2x);
+  margin-top: 20px;
+  padding: var(--spacing-scale-2x);
+  background: transparent;
+  font-size: var(--font-size-scale-down-01);
+}
+
+.paginacao__grupo {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-scale-2x);
+}
+
+.paginacao__divisor {
+  width: 2px;
+  height: 32px;
+  background: var(--color-neutral-light);
+}
+
+.paginacao select {
+  height: 32px;
+  padding: 0 var(--spacing-scale-half) 0 var(--spacing-scale-baseh);
+  border: 1px solid transparent;
+  background-color: var(--color-white);
+  font: inherit;
+  font-size: var(--font-size-scale-base);
+  color: var(--color-neutral-body);
+  cursor: pointer;
+}
+
+.paginacao .btn--circle {
+  width: 40px;
+  height: 32px;
+}
+
+.paginacao .btn--circle + .btn--circle {
+  margin-left: calc(-1 * var(--spacing-scale-2x));
+}
+
+/* ─── Accordion (accordion - 16px) · Histórico de alterações ──────────────── */
+
+.accordion {
+  margin-top: var(--spacing-scale-6x);
+  border-bottom: 1px solid var(--color-neutral-light);
+}
+
+.accordion__botao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 50px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-primary-interactive);
+  font-size: var(--font-size-scale-up-01);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.accordion__botao .fa-chevron-down {
+  transition: transform 0.15s ease;
+}
+
+.accordion__botao[aria-expanded="true"] .fa-chevron-down {
+  transform: rotate(180deg);
+}
+
+.accordion__painel {
+  padding-bottom: var(--spacing-scale-3x);
+}
+
+.accordion__painel[hidden] {
+  display: none;
+}
+
+/* ─── Toast ───────────────────────────────────────────────────────────────── */
+
+.toast-area {
+  position: fixed;
+  top: var(--spacing-scale-2x);
+  right: var(--spacing-scale-2x);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-scale-base);
+  max-width: 420px;
+}
+
+.toast {
+  display: flex;
+  gap: var(--spacing-scale-baseh);
+  padding: var(--spacing-scale-2x);
+  background: var(--color-primary-background);
+  border-left: 4px solid var(--color-primary-interactive-area);
+  box-shadow: var(--shadow-camada-3);
+}
+
+.toast .fa-solid {
+  color: var(--color-primary-interactive);
+  line-height: 1.45;
+}
+
+/* ─── Footer (footer desktop — SIE) ───────────────────────────────────────── */
+
+.footer {
+  border-top: 4px solid var(--color-neutral-background);
+}
+
+.footer__principal {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-scale-3x);
+  padding-top: var(--spacing-scale-2x);
+  padding-bottom: var(--spacing-scale-2x);
+}
+
+.footer__instituicao {
+  display: flex;
+  gap: var(--spacing-scale-base);
+  align-items: flex-start;
+}
+
+.footer__instituicao img {
+  width: 64px;
+  height: auto;
+}
+
+.footer__instituicao p {
+  margin: 0;
+}
+
+.footer__links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--spacing-scale-base);
+}
+
+.footer__links a {
+  color: var(--color-primary-interactive);
+  text-decoration: none;
+}
+
+.footer__links a:hover {
+  text-decoration: underline;
+}
+
+.footer__assinatura {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: var(--spacing-scale-half);
+  padding-bottom: var(--spacing-scale-half);
+  background: var(--color-neutral-background);
+}
+
+.footer__assinatura img {
+  height: 18px;
+}
+
+/* ─── Barra do protótipo: botão e nota ────────────────────────────────────── */
+
+.prototipo-barra__botao {
+  font: inherit;
+  padding: 2px var(--spacing-scale-baseh);
+  border: 1px solid var(--color-white);
+  background: transparent;
+  color: var(--color-white);
+  cursor: pointer;
+}
+
+.prototipo-barra__botao:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.prototipo-barra__nota {
+  opacity: 0.8;
+}
+
+/* ─── Edição na própria página ────────────────────────────────────────────── */
+
+.painel-edicao {
+  padding: var(--spacing-scale-3x);
+  border: 1px solid var(--color-neutral-light);
+  border-left: 4px solid var(--color-primary-interactive-area);
+  background: var(--color-white);
+  box-shadow: var(--shadow-camada-2);
+}
+
+.secao__cabecalho + .painel-edicao {
+  margin-bottom: var(--spacing-scale-3x);
+}
+
+.painel-edicao__titulo {
+  margin: 0 0 var(--spacing-scale-3x);
+  font-size: var(--font-size-scale-up-01);
+  color: var(--color-primary-headings);
+}
+
+.subpagina__acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-scale-base);
+  margin-top: var(--spacing-scale-base);
+  padding-top: var(--spacing-scale-3x);
+  border-top: 1px solid var(--color-neutral-light);
+}
+
+/* identificação da linha: abre e fecha o detalhe na própria tabela */
+.link-botao {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-scale-base);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-primary-interactive);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.link-botao .fa-solid {
+  width: 10px;
+  font-size: 0.75em;
+}
+
+.link-botao:hover {
+  text-decoration: underline;
+}
+
+.link-botao:disabled {
+  color: var(--color-neutral-base);
+  cursor: default;
+  text-decoration: none;
+}
+
+/* (As regras de linha aberta com fundo azul da versão anterior saíram: a lista
+   segue o accordion do sistema, sem fundo — ver o fim deste arquivo.) */
+
+/* campos de leitura em grade, nos detalhes */
+.campos-leitura--grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.campos-leitura--grade .campo-largo {
+  grid-column: 1 / -1;
+}
+
+.campos-leitura dd.texto-longo {
+  max-width: 72ch;
+  white-space: pre-line;
+}
+
+/* ─── Formulário (input text · select · textarea · radio — 16px) ──────────── */
+
+.formulario {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: var(--spacing-scale-3x) var(--spacing-scale-4x);
+  max-width: 880px;
+}
+
+.formulario .campo-largo {
+  grid-column: 1 / -1;
+}
+
+.formulario__grupo {
+  grid-column: 1 / -1;
+  margin: var(--spacing-scale-2x) 0 0;
+  padding-top: var(--spacing-scale-3x);
+  border-top: 1px solid var(--color-neutral-light);
+  font-size: var(--font-size-scale-up-01);
+  color: var(--color-primary-headings);
+}
+
+fieldset.campo {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+fieldset.campo legend {
+  padding: 0;
+  margin-bottom: var(--spacing-scale-base);
+}
+
+.campo .obrigatorio {
+  color: var(--color-danger-base);
+  margin-left: 2px;
+}
+
+.controle {
+  width: 100%;
+  height: 40px;
+  padding: 0 var(--spacing-scale-baseh);
+  border: 1px solid var(--color-neutral-muted);
+  border-radius: 0;
+  background: var(--color-white);
+  color: var(--color-neutral-body);
+  font: inherit;
+}
+
+select.controle {
+  appearance: none;
+  padding-right: var(--spacing-scale-5x);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath fill='%234264cd' d='M201.4 374.6c12.5 12.5 32.8 12.5 45.3 0l160-160c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 306.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l160 160z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 12px;
+  cursor: pointer;
+}
+
+textarea.controle {
+  height: auto;
+  min-height: 120px;
+  padding: var(--spacing-scale-base) var(--spacing-scale-baseh);
+  resize: vertical;
+  line-height: 1.45;
+}
+
+.controle::placeholder {
+  color: var(--color-neutral-muted);
+}
+
+.controle:hover {
+  border-color: var(--color-primary-interactive-area);
+}
+
+.controle:focus,
+.controle:focus-visible {
+  outline: none;
+  border: 2px solid var(--color-highlight-focus);
+  padding-left: calc(var(--spacing-scale-baseh) - 1px);
+  box-shadow: none;
+}
+
+.controle:disabled {
+  background-color: var(--color-neutral-background);
+  border-color: var(--color-neutral-light);
+  color: var(--color-neutral-base);
+  cursor: not-allowed;
+}
+
+.controle--monetario {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.campo--erro .campo__rotulo {
+  color: var(--color-danger-base);
+}
+
+.campo--erro .controle {
+  border-color: var(--color-danger-base);
+}
+
+.campo__erro {
+  display: flex;
+  /* ícone na primeira linha, na baseline do texto, quando a mensagem quebra */
+  align-items: baseline;
+  gap: var(--spacing-scale-half);
+  margin: 0;
+  font-size: var(--font-size-scale-down-01);
+  color: var(--color-danger-dark);
+}
+
+.campo__erro .fa-solid {
+  flex-shrink: 0;
+  color: var(--color-danger-base);
+}
+
+.campo__ajuda {
+  margin: 0;
+  font-size: var(--font-size-scale-down-01);
+  color: var(--color-neutral-base);
+}
+
+/* readonly: rótulo + texto, sem caixa (input text · readonly) */
+.campo__leitura {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-scale-base);
+}
+
+.campo__leitura--longo {
+  display: block;
+  min-height: 0;
+  max-width: 72ch;
+}
+
+.radios {
+  display: flex;
+  gap: var(--spacing-scale-3x);
+  min-height: 40px;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.radios legend {
+  padding: 0;
+  margin-bottom: var(--spacing-scale-base);
+  float: left;
+  width: 100%;
+}
+
+.radio {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-scale-base);
+  cursor: pointer;
+}
+
+.radio input {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  border: 1px solid var(--color-neutral-base);
+  border-radius: 50%;
+  background: var(--color-white);
+  display: inline-grid;
+  place-content: center;
+  cursor: pointer;
+}
+
+.radio:hover input {
+  border-color: var(--color-primary-interactive-area);
+}
+
+.radio input:checked {
+  border-color: var(--color-primary-interactive-area);
+}
+
+.radio input:checked::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary-interactive-area);
+}
+
+.campo--erro .radio input {
+  border-color: var(--color-danger-base);
+}
+
+/* bloco somente leitura dentro do formulário (dados do item da lista global) */
+.item-lista {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: var(--spacing-scale-2x) var(--spacing-scale-4x);
+  padding: var(--spacing-scale-2x) var(--spacing-scale-3x);
+  background: var(--color-neutral-background);
+}
+
+.item-lista__titulo {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: var(--font-size-scale-down-02);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-neutral-dark);
+}
+
+.item-lista .campo-largo {
+  grid-column: 1 / -1;
+}
+
+/* ─── Exercício da página ─────────────────────────────────────────────────── */
+
+.seletor-exercicio {
+  width: 240px;
+}
+
+/* estado vazio no estilo do design (Figma 8086:210408): frase simples, botão embaixo */
+.vazio-texto {
+  margin: 0 0 var(--spacing-scale-2x);
+  color: var(--color-neutral-body);
+}
+
+.vazio-texto--alerta {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-scale-base);
+  color: var(--color-warning-dark);
+  font-weight: 600;
+}
+
+.vazio-texto--alerta .fa-solid {
+  color: var(--color-warning-base);
+}
+
+/* ação de inclusão logo abaixo do título da seção */
+.secao__inicio {
+  margin-bottom: var(--spacing-scale-3x);
+}
+
+/* repasse ordinário em três colunas, como no protótipo do design */
+.campos-leitura--3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: var(--spacing-scale-3x);
+}
+
+.campos-leitura--3 + .texto-auxiliar {
+  margin: calc(-1 * var(--spacing-scale-2x)) 0 var(--spacing-scale-3x);
+}
+
+.valor-negativo {
+  color: var(--color-danger-dark);
+  font-weight: 600;
+}
+
+/* última atualização das despesas */
+.atualizacao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-scale-base);
+  margin: 0;
+  padding: var(--spacing-scale-baseh) var(--spacing-scale-2x);
+  background: var(--color-neutral-background);
+  font-size: var(--font-size-scale-down-01);
+  color: var(--color-neutral-dark);
+}
+
+.atualizacao > .fa-clock {
+  color: var(--color-neutral-base);
+}
+
+.atualizacao--alerta {
+  background: var(--color-warning-background);
+  border-left: 4px solid var(--color-warning-base);
+}
+
+.tag--warning-light {
+  gap: var(--spacing-scale-half);
+  background: var(--color-warning-muted);
+  color: var(--color-warning-dark);
+}
+
+.a-informar {
+  font-style: italic;
+  color: var(--color-warning-dark);
+}
+
+/* ─── Modal (modal - 16px · Abrir exercício, Figma 7983:196998) ───────────── */
+
+.modal {
+  width: min(800px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  padding: 0;
+  border: 0;
+  background: var(--color-white);
+  color: var(--color-neutral-body);
+  box-shadow: var(--shadow-camada-3);
+}
+
+.modal::backdrop {
+  background: rgba(9, 30, 66, 0.5);
+}
+
+.modal form {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 32px);
+}
+
+.modal__cabecalho {
+  padding: var(--spacing-scale-4x) var(--spacing-scale-4x) var(--spacing-scale-3x);
+  border-bottom: 1px solid var(--color-neutral-light);
+}
+
+.modal__titulo {
+  font-size: var(--font-size-scale-up-02);
+  color: var(--color-primary-headings);
+}
+
+.modal__corpo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-scale-3x);
+  padding: var(--spacing-scale-4x);
+  overflow-y: auto;
+}
+
+.modal__ano {
+  width: 160px;
+}
+
+.campo__rotulo--desabilitado {
+  color: var(--color-neutral-base);
+  font-weight: 400;
+}
+
+.modal__copiar {
+  min-height: 0;
+  margin-bottom: calc(-1 * var(--spacing-scale-baseh));
+}
+
+.modal__rodape {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-scale-2x);
+  padding: var(--spacing-scale-3x) var(--spacing-scale-4x);
+  border-top: 1px solid var(--color-neutral-light);
+}
+
+.arvore {
+  max-height: 380px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--color-neutral-light);
+  border-radius: 6px;
+}
+
+.arvore--inativa .arvore__linha--grupo,
+.arvore--inativa .arvore__linha--item {
+  opacity: 0.55;
+}
+
+.arvore__linha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-scale-2x);
+  min-height: 48px;
+  padding: 0 var(--spacing-scale-2x) 0 var(--spacing-scale-3x);
+  border-bottom: 1px solid var(--color-neutral-light);
+}
+
+.arvore__linha:last-child {
+  border-bottom: 0;
+}
+
+.arvore__linha .checkbox {
+  min-height: 0;
+  gap: var(--spacing-scale-2x);
+}
+
+.arvore__linha--grupo {
+  font-weight: 700;
+  color: var(--color-primary-headings);
+}
+
+.arvore__linha--item {
+  padding-left: calc(var(--spacing-scale-3x) + var(--spacing-scale-5x));
+}
+
+.arvore__detalhe {
+  color: var(--color-neutral-base);
+}
+
+.arvore__linha--desabilitada {
+  color: var(--color-neutral-muted);
+}
+
+.arvore__linha--desabilitada .arvore__detalhe {
+  color: var(--color-neutral-muted);
+}
+
+.arvore__linha--desabilitada input {
+  border-color: var(--color-neutral-muted);
+  cursor: not-allowed;
+}
+
+.arvore__aviso {
+  font-size: var(--font-size-scale-down-01);
+  color: var(--color-warning-dark);
+  white-space: nowrap;
+}
+
+.info {
+  display: flex;
+  gap: var(--spacing-scale-baseh);
+  align-items: flex-start;
+  padding: var(--spacing-scale-2x) var(--spacing-scale-2x);
+  border-radius: 6px;
+  background: var(--color-primary-background);
+  font-size: var(--font-size-scale-down-01);
+  color: var(--color-neutral-dark);
+}
+
+.info p {
+  margin: 0;
+}
+
+.info .fa-solid {
+  font-size: var(--font-size-scale-up-01);
+  color: var(--color-neutral-body);
+}
+
+/* ─── Toast de sucesso ────────────────────────────────────────────────────── */
+
+.toast--sucesso {
+  background: var(--color-success-background);
+  border-left-color: var(--color-success-base);
+}
+
+.toast--sucesso .fa-solid {
+  color: var(--color-success-base);
+}
+
+/* ─── Responsivo ──────────────────────────────────────────────────────────── */
+
+@media (max-width: 992px) {
+  .container-fluid {
+    padding: 0 var(--spacing-scale-2x);
+  }
+
+  .header__nav {
+    display: none;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .layout > nav {
+    padding-right: 0;
+  }
+
+  .layout > nav::after {
+    display: none;
+  }
+
+  .menu-lateral {
+    border-bottom: 3px solid var(--color-neutral-background);
+    padding: 0 0 var(--spacing-scale-2x);
+    margin-bottom: var(--spacing-scale-3x);
+  }
+
+  .conteudo {
+    padding-left: 0;
+  }
+
+  .tabela-rolagem {
+    overflow-x: auto;
+  }
+}
+
+/* ═══ Protótipo HTML de 13/10/2026 — telas atuais do Figma ═══════════════════ */
+
+.pular {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  padding: var(--spacing-scale-base) var(--spacing-scale-2x);
+  background: var(--color-white);
+  color: var(--color-primary-interactive);
+  font-weight: 600;
+}
+.pular:focus { left: var(--spacing-scale-2x); }
+
+/* Valor negativo: sinal de menos e vermelho (RN019) — o sinal é texto, não só cor. */
+.valor-negativo { color: var(--color-danger-dark); font-weight: 600; }
+
+/* Alerta informativo (azul) e fechável */
+.alert--info { background: var(--color-primary-background); border-color: var(--color-primary-surfaces); }
+.alert--info .alert__titulo, .alert--info .alert__icone { color: var(--color-primary-headings); }
+.alert > div { flex: 1; }
+.alert__fechar {
+  align-self: flex-start;
+  border: 0;
+  background: transparent;
+  color: var(--color-neutral-dark);
+  font-size: var(--font-size-scale-up-01);
+  cursor: pointer;
+  padding: 0 var(--spacing-scale-half);
+}
+
+/* Campos de leitura em grade */
+.campos-leitura-grade {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--spacing-scale-2x) var(--spacing-scale-3x);
+  margin: 0 0 var(--spacing-scale-3x);
+}
+.campos-leitura-grade--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 560px; margin: var(--spacing-scale-baseh) 0 0; }
+.campos-leitura-grade dt, .campos-leitura-grade .campo__rotulo { font-weight: 600; color: var(--color-primary-headings); display: block; }
+.campos-leitura-grade dd { margin: var(--spacing-scale-base) 0 0; }
+.campos-leitura-grade dd:has(> *:only-child), .campos-leitura-grade > div:has(dt) { min-width: 0; }
+
+/* Linha de ações e seletor de exercício */
+.linha-acoes { display: flex; align-items: center; gap: var(--spacing-scale-3x); flex-wrap: wrap; }
+.seletor-exercicio { width: 174px; }
+.bloco-acao { margin-bottom: var(--spacing-scale-3x); }
+.bloco-acao .campo__ajuda { margin-top: var(--spacing-scale-base); }
+.btn[aria-disabled="true"] { pointer-events: none; }
+
+/* Nº da portaria */
+.campo-portaria { margin-bottom: var(--spacing-scale-3x); }
+.campo-portaria .campo__rotulo { display: block; margin-bottom: var(--spacing-scale-base); }
+.campo-portaria__valor { display: flex; align-items: center; gap: var(--spacing-scale-baseh); min-height: 40px; }
+.edicao-inline { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-scale-base); }
+.edicao-inline .controle { width: 220px; }
+.edicao-inline .campo__erro { flex-basis: 100%; }
+
+/* Botões de ícone (lápis, lixeira) */
+.btn-icone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  background: transparent;
+  color: var(--color-primary-interactive);
+  cursor: pointer;
+  font-size: 1rem;
+}
+.btn-icone:hover { background: var(--color-primary-background); }
+.btn-icone--perigo { color: var(--color-danger-base); }
+.btn-icone--perigo:hover { background: var(--color-danger-background); }
+.btn-icone:focus-visible { outline: 2px solid var(--color-highlight-focus); box-shadow: none; }
+.btn--compacto { height: 32px; padding: 0 var(--spacing-scale-baseh); font-size: var(--font-size-scale-down-01); }
+.btn--perigo { background: var(--color-danger-base); color: var(--color-white); }
+.btn--perigo:hover { background: var(--color-danger-dark); }
+
+/* Tabela de valores: números à esquerda, ícones à direita (padrão das tabelas do Figma) */
+.tabela--valores { table-layout: fixed; }
+.tabela--valores th[scope="row"] {
+  text-align: left;
+  font-size: var(--font-size-scale-base);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: normal;
+  border-bottom: 1px solid var(--color-neutral-light);
+  padding: var(--spacing-scale-2x);
+  color: var(--color-neutral-body);
+}
+.tabela--valores thead th:first-child { width: 28%; }
+/* Tabela de valores de um repasse complementar: ocupa a largura toda, como no Figma. */
+.tabela--valores-1 thead th:first-child { width: 55%; }
+.tabela--valores td { font-variant-numeric: tabular-nums; }
+.tabela tbody tr.linha-total, .tabela tfoot tr.linha-total { background: var(--color-neutral-background); }
+.linha-total th[scope="row"], .linha-total td { font-weight: 700; border-bottom: 0; }
+.tabela tfoot tr:hover { background: var(--color-neutral-background); }
+.celula-valor { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-scale-base); }
+.celula-valor__acoes { display: inline-flex; gap: var(--spacing-scale-half); }
+/* Campo aberto na célula (miniform do Figma 8178-226326). */
+/* O campo ocupa só a própria célula, na largura toda dela; Salvar e Cancelar
+   embaixo cabem nessa mesma largura (4px entre eles e 8px de padding no
+   Cancelar). Célula estreita demais: o Cancelar desce, em vez de invadir a
+   coluna vizinha. */
+.edicao-celula { display: flex; flex-direction: column; gap: var(--spacing-scale-base); min-width: 0; }
+.edicao-celula .obrigatorio { margin-left: 2px; color: var(--color-danger-base); }
+.edicao-celula__linha { display: flex; }
+.edicao-celula__campo { position: relative; flex: 1; min-width: 0; }
+.edicao-celula .controle { width: 100%; height: 40px; padding-right: 32px; }
+.edicao-celula__acoes { display: flex; flex-wrap: wrap; align-items: center; gap: var(--spacing-scale-half); white-space: nowrap; }
+.edicao-celula__acoes .btn--tertiary { padding-left: var(--spacing-scale-base); padding-right: var(--spacing-scale-base); }
+.edicao-celula__acoes .btn--primary { width: 80px; justify-content: center; }
+.edicao-celula__limpar {
+  position: absolute; top: 50%; right: var(--spacing-scale-half); transform: translateY(-50%);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px; padding: 0; border: 0; background: transparent;
+  color: var(--color-neutral-dark); cursor: pointer;
+}
+.edicao-celula__limpar:focus-visible { outline: 2px solid var(--color-highlight-focus); }
+.edicao-celula__campo input:placeholder-shown + .edicao-celula__limpar { display: none; }
+
+/* Faixa de saldo total dos complementares — mesmo nome e estilo da linha do ordinário */
+.faixa-total {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: var(--spacing-scale-2x);
+  align-items: center;
+  min-height: 72px;
+  padding: 0 var(--spacing-scale-2x);
+  background: var(--color-neutral-background);
+  font-weight: 700;
+  margin-bottom: var(--spacing-scale-base);
+}
+
+/* Lista de complementares */
+.tabela--lista th { width: 25%; }
+.tabela--lista td { font-variant-numeric: tabular-nums; }
+.linha-clicavel { cursor: pointer; }
+.linha-clicavel a { color: inherit; text-decoration: none; }
+.linha-clicavel a:hover, .linha-clicavel a:focus-visible { color: var(--color-primary-interactive); text-decoration: underline; }
+.th-ordenavel:focus-visible { outline: 2px solid var(--color-highlight-focus); box-shadow: none; }
+
+/* Histórico (accordion) */
+.historico { margin-top: var(--spacing-scale-6x); border-bottom: 1px solid var(--color-neutral-light); }
+.historico summary {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 50px; cursor: pointer; list-style: none;
+  color: var(--color-primary-interactive); font-size: var(--font-size-scale-up-01); font-weight: 600;
+}
+.historico summary::-webkit-details-marker { display: none; }
+.historico[open] summary .fa-chevron-down { transform: rotate(180deg); }
+.historico summary:focus-visible { outline: 2px solid var(--color-highlight-focus); box-shadow: none; }
+
+/* Telas de formulário (abertura, cadastro, edição) */
+.texto-apoio { max-width: 880px; margin: var(--spacing-scale-2x) 0 var(--spacing-scale-4x); }
+.secao--compacta + .secao--compacta { margin-top: 0; }
+.formulario--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 880px; }
+.formulario .campo-largo, .formulario .formulario__grupo { grid-column: 1 / -1; }
+.campo--alinhar { display: none; }
+.controle-prefixo { display: flex; align-items: center; border: 1px solid var(--color-neutral-muted); background: var(--color-white); }
+.controle-prefixo span { padding-left: var(--spacing-scale-baseh); color: var(--color-neutral-base); }
+.controle-prefixo .controle { border: 0; }
+.controle-prefixo:focus-within { border: 2px solid var(--color-highlight-focus); }
+.controle-prefixo .controle:focus { border: 0; padding-left: var(--spacing-scale-baseh); }
+.campo--erro .controle-prefixo { border-color: var(--color-danger-base); }
+.controle--monetario { text-align: left; }
+.acoes-form { display: flex; align-items: center; gap: var(--spacing-scale-2x); margin-top: var(--spacing-scale-5x); }
+.resumo-abertura { margin: 0 0 var(--spacing-scale-baseh); }
+.contador { margin: 0 0 var(--spacing-scale-2x); color: var(--color-neutral-dark); font-size: var(--font-size-scale-down-01); }
+.tabela--selecao .col-check { width: 48px; }
+.tabela--selecao th { white-space: normal; }
+.tabela--selecao input[type="checkbox"], .checkbox input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--color-primary-interactive-area); }
+.link-voltar { display: inline-flex; align-items: center; gap: var(--spacing-scale-base); margin-bottom: var(--spacing-scale-2x); color: var(--color-primary-interactive); font-weight: 600; text-decoration: none; }
+.link-voltar:hover { text-decoration: underline; }
+.assessor-escolhido:empty { display: none; }
+.bloco-leitura { padding: var(--spacing-scale-2x); background: var(--color-neutral-background); }
+.bloco-leitura__titulo { margin: 0 0 var(--spacing-scale-baseh); font-size: var(--font-size-scale-down-01); color: var(--color-neutral-dark); }
+.bloco-leitura .campos-leitura-grade { grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; }
+.bloco-leitura .campos-leitura-grade > div:last-child { grid-column: 1 / -1; }
+
+/* Modal de confirmação (ação destrutiva) */
+.modal--confirmacao { width: min(560px, calc(100vw - 32px)); }
+.modal--confirmacao .modal__cabecalho, .modal--confirmacao .modal__rodape { border: 0; }
+.modal--confirmacao .modal__corpo { padding-top: 0; gap: var(--spacing-scale-base); }
+.modal--confirmacao .modal__corpo p { margin: 0; }
+.modal__titulo--perigo { color: var(--color-danger-base); }
+
+/* Toast */
+.toast { align-items: flex-start; width: 480px; max-width: calc(100vw - 32px); }
+.toast__texto { flex: 1; margin: 0; }
+.toast__texto a { color: var(--color-primary-interactive); font-weight: 600; text-decoration: underline; }
+.toast__fechar { border: 0; background: transparent; color: var(--color-neutral-dark); cursor: pointer; padding: 0 var(--spacing-scale-half); }
+.toast--info { background: var(--color-primary-background); border-left-color: var(--color-primary-surfaces); }
+.toast-area { max-width: none; }
+
+/* Foco visível em links e controles (WCAG 2.4.7) */
+a:focus-visible, select:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--color-highlight-focus); outline-offset: 1px; box-shadow: none; }
+
+@media (max-width: 992px) {
+  .campos-leitura-grade, .formulario--3, .bloco-leitura .campos-leitura-grade { grid-template-columns: 1fr 1fr; }
+  .faixa-total { grid-template-columns: 1fr; padding: var(--spacing-scale-2x); }
+}
+@media (max-width: 600px) {
+  .campos-leitura-grade, .formulario--3, .bloco-leitura .campos-leitura-grade { grid-template-columns: 1fr; }
+  .toast { width: auto; }
+}
+
+/* Última atualização das despesas: texto simples abaixo da tabela (como no Figma) */
+.atualizacao { background: transparent; padding: var(--spacing-scale-baseh) 0 0; margin: 0; display: flex; align-items: center; gap: var(--spacing-scale-base); font-size: var(--font-size-scale-down-01); color: var(--color-neutral-dark); }
+
+/* Saldos anteriores alinhados sob Nº da portaria e Previsão, como no Figma */
+.campo--alinhar { display: block; }
+@media (max-width: 992px) { .campo--alinhar { display: none; } }
+
+/* Campo de leitura sozinho (Objeto, Orientação): ocupa a largura do conteúdo */
+.campos-leitura-grade:has(> div:only-child) { grid-template-columns: 1fr; max-width: 880px; }
+
+/* ─── Espaçamento entre as seções da tab PROAFE (Figma 8584-92620) ─────────
+   A coluna de conteúdo tem 32px entre os blocos — grupo Conta + Exercício,
+   alerta, Repasse ordinário, Repasses complementares —, e o título de cada
+   seção soma o próprio espaçamento (h4: 32px; h5: 28px). Exercício continua o
+   bloco da Conta Bancária, sem os 32px. */
+#painel-proafe > * + .secao,
+#painel-proafe > .secao + .alert {
+  margin-top: 32px;
+}
+#painel-proafe > .alert {
+  margin-bottom: 0;
+}
+#painel-proafe > .secao + .secao--continua {
+  margin-top: 0;
+}
+
+/* As abas não somam margem: o título Conta Bancária já traz os 32px abaixo
+   delas. Começando por um alerta (Conselho Escolar), ele fica 32px abaixo. */
+.tabs:has(+ #painel-proafe) {
+  margin-bottom: 0;
+}
+#painel-proafe > .alert:first-child {
+  margin-top: 32px;
+}
+
+/* Repasse ordinário: portaria → tabela 12px; tabela → "Despesas atualizadas
+   em…" 24px; 20px no fim do bloco. */
+#painel-proafe .campo-portaria { margin-bottom: 12px; }
+#painel-proafe .atualizacao { margin-top: 24px; padding: 0 0 20px; }
+
+/* Repasses complementares: 20px entre botão, filtros, faixa do saldo e tabela. */
+#painel-proafe .bloco-acao,
+#painel-proafe .filtros,
+#painel-proafe .faixa-total { margin-bottom: 20px; }
+
+/* ─── Lista de repasses complementares expansível ───────────────────────────
+   Como o accordion do sistema (Figma 8690-384287, boletim): a linha continua
+   branca, a seta (botão circular) fica na última coluna e o corpo, também
+   branco, traz os dados e a tabela do repasse, com 20px no fim e borda embaixo. */
+.tabela--lista th.col-expandir,
+.tabela--lista td.col-expandir { width: 64px; padding-top: 0; padding-bottom: 0; text-align: right; }
+.linha-expansivel { cursor: pointer; }
+.linha-expansivel.aberta > td { border-bottom-color: #eeeeee; }
+.tabela tbody tr.linha-detalhe:hover { background: transparent; }
+/* 40px no fim do corpo aberto: separa o grupo da próxima linha fechada. */
+.tabela tbody tr.linha-detalhe > td { padding: 0 0 var(--spacing-scale-5x); border-bottom: 1px solid var(--color-neutral-light); cursor: default; }
+.detalhe-repasse { display: flex; flex-direction: column; gap: var(--spacing-scale-2x); padding: var(--spacing-scale-2x) var(--spacing-scale-2x) 0; }
+.detalhe-repasse .alert { margin-bottom: 0; }
+.detalhe-repasse__subtitulo { margin: 0 0 var(--spacing-scale-base); font-size: var(--font-size-scale-base); font-weight: 600; color: var(--color-primary-headings); }
+/* Leitura: os campos à esquerda e o Editar (terciário) no canto direito. */
+.detalhe-repasse__topo { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--spacing-scale-3x); }
+.detalhe-repasse__campos { flex: 1; min-width: 0; }
+.detalhe-repasse__campos .campos-leitura-grade { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.detalhe-repasse__campos > :last-child { margin-bottom: 0; }
+.detalhe-repasse__topo > .btn { flex: none; }
+.detalhe-repasse .formulario { max-width: none; }
+
+
+/* ─── Variante "exercício geral" (proposta, 15/10/2026) ──────────────────────
+   Financeiro › Exercícios fica fora da tela de uma escola: some o cabeçalho da
+   escola e o menu lateral. */
+body.modo-gestao .page-header,
+body.modo-gestao .layout > nav { display: none; }
+body.modo-gestao .layout { grid-template-columns: 1fr; }
+.link-discreto { margin-left: var(--spacing-scale-2x); font-size: 14px; color: var(--color-primary-interactive); text-decoration: none; font-weight: 600; }
+.link-discreto:hover { text-decoration: underline; }
+.lista-simples { margin: 0 0 var(--spacing-scale-2x); padding-left: 20px; }
+.lista-simples li { margin: 6px 0; }
+.bloco-acao { display: flex; flex-wrap: wrap; gap: var(--spacing-scale-2x); align-items: center; }
+.alert__corpo + .btn { margin-top: var(--spacing-scale-base); }
+.bloco-acao .campo__ajuda { flex-basis: 100%; }
+.cartoes-resumo { display: flex; flex-wrap: wrap; gap: var(--spacing-scale-2x); margin: var(--spacing-scale-2x) 0; }
+.cartao-resumo { border: 1px solid var(--color-neutral-border, #dcdee4); border-radius: 8px; padding: 10px 14px; min-width: 130px; display: flex; flex-direction: column; font-size: 14px; }
+.cartao-resumo strong { font-size: 22px; line-height: 1.2; }
+.cartao-resumo--ok strong { color: var(--color-success-dark); }
+.cartao-resumo--alerta strong { color: var(--color-warning-dark); }
+.tabela-rolagem--alta { max-height: 520px; overflow-y: auto; }
+.tabela-rolagem--alta thead th { position: sticky; top: 0; background: #fff; z-index: 1; }
+.cartao-resumo--erro strong { color: var(--color-danger-dark); }
+
+/* ─── Financeiro: título e abas Repasses | Exercícios (Figma 8732-70231) ─────
+   Sem migalha e sem o recuo do menu lateral: o título "Financeiro" (40px)
+   fica 24px abaixo do cabeçalho e as abas 8px abaixo dele. As abas são links;
+   o sublinhado de 4px ocupa a largura da aba. */
+body.modo-gestao main > nav[aria-label="Você está em"] { display: none; }
+body.modo-gestao .conteudo { padding-left: 0; }
+.financeiro__titulo { margin: var(--spacing-scale-3x) 0 var(--spacing-scale-base); }
+.tabs--pagina { margin: 0; padding-left: var(--spacing-scale-base); list-style: none; }
+.tabs--pagina li { display: flex; }
+.tabs--pagina .tab-item { display: inline-flex; align-items: center; min-height: 42px; padding: 0 var(--spacing-scale-baseh); text-decoration: none; }
+.tabs--pagina .tab-item[aria-current="page"] { font-weight: 700; }
+.tabs--pagina .tab-item[aria-current="page"]::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 4px;
+  background: var(--color-primary-interactive-area);
+}
+.tabs--pagina .tab-item:focus-visible { outline: 2px solid var(--color-highlight-focus); outline-offset: -2px; box-shadow: none; }
+
+/* Aba Repasses: título de 32px com o "+ Repasse" à direita; filtros de 282px
+   com 24px entre eles; "Exibir repasses extintos" embaixo; depois a tabela. */
+.secao__cabecalho:has(> #t-rep) { padding: 40px 0 var(--spacing-scale-3x); }
+#t-rep { font-size: 32px; }
+.filtros--rep { gap: var(--spacing-scale-3x); margin-bottom: var(--spacing-scale-base); }
+.filtros--rep .campo { flex: 0 1 282px; min-width: 200px; }
+.filtros__extintos, .filtros--rep + .checkbox { margin-bottom: var(--spacing-scale-2x); }
+.tabela--rep .linha-extinta td { color: var(--color-neutral-base); }
+.filtros__acoes { display: flex; align-items: center; gap: var(--spacing-scale-2x); }
+.filtros__acoes .btn--tertiary { padding: 0 var(--spacing-scale-base); }
+/* Larguras das colunas como no Figma (1200px): 112 · 195 · resto · 250 · 106 */
+.tabela--rep th:nth-child(1) { width: 112px; }
+.tabela--rep th:nth-child(2) { width: 195px; }
+.tabela--rep th:nth-child(4) { width: 250px; }
+.tabela--rep th:nth-child(5) { width: 106px; }
+/* Aba Exercícios e as telas dela: o conteúdo começa 40px abaixo das abas,
+   como o título "Repasses" da outra aba. */
+nav:has(> .tabs--pagina) + :not(.secao) { margin-top: 40px; }
+
+/* ─── Tela do exercício no padrão do DS ──────────────────────────────────────
+   Cards do resumo da importação quadrados (o DS não arredonda contêineres):
+   borda de 1px #DCDEE4, 16px de padding, número em Noto Sans Display 24px e
+   rótulo de 14px; todos com a mesma largura. A tag de pendência segue as tags
+   "light" do DS: fundo neutro e texto na cor do estado. */
+.cartoes-resumo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--spacing-scale-2x);
+  margin: var(--spacing-scale-2x) 0;
+}
+.cartao-resumo {
+  min-width: 0;
+  gap: var(--spacing-scale-half);
+  padding: var(--spacing-scale-2x);
+  border: 1px solid var(--color-neutral-light);
+  border-radius: 0;
+  font-size: var(--font-size-scale-down-01);
+  color: var(--color-neutral-dark);
+}
+.cartao-resumo strong {
+  font-family: "Noto Sans Display", "Noto Sans", sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--color-primary-headings);
+}
+.tag--warning-light { background: var(--color-neutral-background); color: var(--color-warning-dark); }
+.secao .detalhe-repasse__subtitulo { margin-top: var(--spacing-scale-2x); }
+.cartao-resumo--ok strong { color: var(--color-success-dark); }
+.cartao-resumo--alerta strong { color: var(--color-warning-dark); }
+.cartao-resumo--erro strong { color: var(--color-danger-dark); }
+/* Portaria e parcelas lado a lado na tela do exercício */
+.campos-portaria { display: flex; flex-wrap: wrap; gap: 0 var(--spacing-scale-6x); }
+/* Título das abas do Financeiro (Repasses e Exercícios): 32px, 40px abaixo das
+   abas, com a ação principal à direita e 24px até o conteúdo. */
+.secao__cabecalho:has(> .secao__titulo--pagina) { padding: 40px 0 var(--spacing-scale-3x); }
+.secao__titulo--pagina { font-size: 32px; }
+/* Título com voltar (Figma 7560:293740): botão circular terciário de 40px com a
+   seta, 24px antes do título da tela. */
+.titulo-voltar { display: flex; align-items: center; gap: var(--spacing-scale-3x); margin-bottom: var(--spacing-scale-2x); }
+.titulo-voltar .btn--circle { flex: none; }
+.titulo-voltar .btn--circle .fa-solid { font-size: 16px; }
+
+/* ─── Esconder a barra do protótipo ──────────────────────────────────────────
+   Para apresentar as telas como o cliente vai vê-las. Escondida, ela volta pelo
+   botão "Mostrar", que aparece ao passar o mouse no logo do SIE. */
+.prototipo-barra[hidden] { display: none; }
+.prototipo-barra__esconder { margin-left: auto; }
+/* "Mostrar" aparece ao passar o mouse no logo do SIE (ou ao chegar nele pelo
+   teclado), logo abaixo do logo. */
+.header__marca-area { position: relative; display: flex; align-items: center; }
+.prototipo-mostrar {
+  position: absolute; left: 0; top: 100%; z-index: 60;
+  display: inline-flex; align-items: center; gap: var(--spacing-scale-base);
+  padding: var(--spacing-scale-half) var(--spacing-scale-baseh);
+  border: 0; background: var(--color-neutral-dark); color: var(--color-white);
+  font: inherit; font-size: var(--font-size-scale-down-01); white-space: nowrap; cursor: pointer;
+  opacity: 0; pointer-events: none; transition: opacity 0.15s ease;
+}
+.header__marca-area:hover .prototipo-mostrar,
+.prototipo-mostrar:focus-visible { opacity: 1; pointer-events: auto; }
+.prototipo-mostrar[hidden] { display: none; }
+.prototipo-mostrar:focus-visible, .prototipo-barra__botao:focus-visible { outline: 2px solid var(--color-highlight-focus); outline-offset: 2px; box-shadow: none; }
+
+/* Períodos da prestação de contas (tela Abrir exercício e tela do exercício) */
+.periodos { margin-top: var(--spacing-scale-3x); max-width: 880px; }
+.tabela--periodos { margin: var(--spacing-scale-base) 0; }
+.tabela--periodos th[scope="row"] { font-size: var(--font-size-scale-base); font-weight: 400; letter-spacing: 0; text-transform: none; white-space: nowrap; color: var(--color-neutral-body); border-bottom: 1px solid var(--color-neutral-light); padding: var(--spacing-scale-2x); text-align: left; }
+.tabela--periodos td { padding-top: var(--spacing-scale-base); padding-bottom: var(--spacing-scale-base); }
+.tabela--periodos .controle { min-width: 150px; }
+.tabela--periodos tbody tr:hover { background: transparent; }
+.lista-periodos { margin: 0; padding-left: 20px; }
+.lista-periodos li { margin: 2px 0; }
+fieldset.periodos { margin-top: var(--spacing-scale-4x); }
+.periodos > .btn { align-self: flex-start; }
+#form-abrir-geral .formulario + .campo__ajuda { margin-top: var(--spacing-scale-base); }
+
+/* ─── Escolas (Figma 46-3513) ─────────────────────────────────────────────── */
+.escolas__cabecalho { display: flex; align-items: center; justify-content: space-between; gap: var(--spacing-scale-2x); margin: var(--spacing-scale-3x) 0 var(--spacing-scale-3x); }
+.escolas__cabecalho .page-title { margin: 0; }
+.busca-escolas { display: flex; flex-direction: column; gap: var(--spacing-scale-3x); margin-bottom: var(--spacing-scale-4x); }
+.busca-escolas__filtros { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--spacing-scale-3x); }
+.busca-escolas__filtros .campo { flex: 1 1 220px; }
+.lista-escolas td { vertical-align: middle; }
+.lista-escolas .celula-secundaria { font-size: var(--font-size-scale-down-02); line-height: 1.6; color: var(--color-neutral-dark); }
+.lista-escolas__nome { display: block; margin-bottom: var(--spacing-scale-half); font-weight: 700; color: var(--color-primary-headings); text-decoration: none; }
+a.lista-escolas__nome:hover, a.lista-escolas__nome:focus-visible { color: var(--color-primary-interactive); text-decoration: underline; }
+.lista-escolas__mantenedora { max-width: 240px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lista-escolas .tag { margin: 2px 0; }
+.lista-escolas .tag--warning-light { font-size: var(--font-size-scale-down-02); }
+.tag--warning { background: var(--color-warning-base); color: var(--color-neutral-body); }
+.tag--highlight { background: var(--color-highlight-focus); color: var(--color-white); }
+.tag--primary-light { background: var(--color-neutral-background); color: var(--color-primary-interactive); }
+.tag__contador { display: inline-flex; align-items: center; justify-content: center; min-width: 16px; height: 16px; margin-left: 4px; padding: 0 4px; border-radius: 8px; background: var(--color-white); color: var(--color-neutral-body); font-size: 10px; }
+
+/* Importação: resumo dos erros, filtro da prévia e simulação do protótipo */
+.resumo-erros__lista { margin: var(--spacing-scale-base) 0 0; padding-left: var(--spacing-scale-3x); }
+.resumo-erros__lista li { margin: 2px 0; }
+.resumo-erros__lista .link-botao { text-align: left; }
+.radios--filtro { flex-wrap: wrap; margin: var(--spacing-scale-3x) 0 var(--spacing-scale-2x); }
+.tabela tbody tr.linha-erro > td:first-child { box-shadow: inset 3px 0 0 var(--color-danger-dark); }
+.simulacao { margin: var(--spacing-scale-3x) 0; padding: var(--spacing-scale-2x) var(--spacing-scale-3x); border: 1px dashed var(--color-neutral-border, #9ea3ad); border-radius: 4px; max-width: 880px; }
+.simulacao__titulo { margin: 0 0 var(--spacing-scale-base); font-size: 14px; font-weight: 600; color: var(--color-neutral-dark, #555); }
+.simulacao__botoes { display: flex; flex-wrap: wrap; gap: var(--spacing-scale-base); }
+.sem-quebra { white-space: nowrap; }
+
+/* Comentários do protótipo: só com "Mostrar comentários" ligado na barra */
+.nota-prototipo { display: none; }
+body.com-comentarios .nota-prototipo {
+  display: flex; gap: var(--spacing-scale-base); align-items: flex-start;
+  max-width: 880px; margin: var(--spacing-scale-base) 0 var(--spacing-scale-2x);
+  padding: var(--spacing-scale-base) var(--spacing-scale-2x);
+  background: #fff4c2; border-left: 4px solid #c99a06; border-radius: 4px;
+  font-size: 13px; line-height: 1.45; color: #3d3200;
+}
+.nota-prototipo i { margin-top: 3px; color: #8a6a00; }
+.nota-prototipo p { margin: 0; }
+.nota-prototipo p::before { content: "Comentário: "; font-weight: 700; }
+
+/* Vários informativos na mesma faixa, um por linha, com o mesmo ícone */
+.atualizacao--lista { flex-wrap: nowrap; align-items: flex-start; }
+.atualizacao--lista > i { margin-top: 3px; }
+.atualizacao--lista p { margin: 0; }
+.atualizacao--lista p + p { margin-top: var(--spacing-scale-half); }
+
+/* Grupo de radios em coluna estreita (Banco da conta): cada opção inteira, sem
+   quebrar o texto no meio; as opções descem para a linha de baixo se não couberem. */
+.formulario .radios { flex-wrap: wrap; row-gap: var(--spacing-scale-base); }
+.formulario .radio { white-space: nowrap; }
+
+/* Escolas do exercício: o nome da escola não espreme; a pendência longa quebra linha. */
+.tabela--escolas-ex th:first-child, .tabela--escolas-ex td:first-child { min-width: 240px; }
+.tabela--escolas-ex td:last-child { min-width: 180px; }
+.tabela--escolas-ex td:last-child .tag { white-space: nowrap; }
+
+/* Pendências na tabela: uma tag por pendência, uma abaixo da outra */
+.pendencias { display: inline-flex; flex-direction: column; align-items: flex-start; gap: var(--spacing-scale-half); }
+.tag--pendencia { gap: var(--spacing-scale-half); }
+
+/* Escolas do exercício: nome e CNPJ embaixo, como na lista de escolas (Figma 67-3575) */
+.tabela--escolas-ex .celula-secundaria { font-size: var(--font-size-scale-down-02); line-height: 1.6; color: var(--color-neutral-dark); }
+a.lista-escolas__nome:hover, a.lista-escolas__nome:focus-visible { color: var(--color-primary-interactive); text-decoration: underline; }
+
+/* Telas internas do Financeiro (abrir, exercício, importar): sem o título
+   "Financeiro" e as abas; a migalha mostra o caminho até a tela. */
+body.modo-gestao.gestao-interna main > nav[aria-label="Você está em"] { display: block; }
+body.modo-gestao.gestao-interna #conteudo > .titulo-voltar:first-child { margin-top: var(--spacing-scale-3x); }
+
+/* Anexar arquivo (DS, Figma 8010-57158 / estados 8010-57563) */
+.campo-arquivo { max-width: 560px; }
+.campo-arquivo .campo__ajuda { margin-bottom: var(--spacing-scale-base); }
+.campo-arquivo__botao { align-self: flex-start; }
+.arquivo-item {
+  margin-top: var(--spacing-scale-base);
+  padding: var(--spacing-scale-baseh) var(--spacing-scale-2x);
+  border: 1px solid var(--color-neutral-border, #dcdee4);
+  border-radius: 4px;
+  background: #fff;
+}
+.arquivo-item__linha { display: flex; align-items: center; gap: var(--spacing-scale-base); min-width: 0; }
+.arquivo-item__icone { flex-shrink: 0; color: var(--color-primary-interactive, #5b7ae6); font-size: 18px; }
+.arquivo-item__nome { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.arquivo-item__meta { flex-shrink: 0; font-size: var(--font-size-scale-down-01); color: var(--color-neutral-dark); }
+.arquivo-item__acao { flex-shrink: 0; }
+.arquivo-item__progresso { display: flex; align-items: center; gap: var(--spacing-scale-2x); margin-top: var(--spacing-scale-base); font-size: var(--font-size-scale-down-01); color: var(--color-neutral-dark); }
+.arquivo-item__barra { flex: 1; height: 8px; border-radius: 4px; background: var(--color-neutral-background, #e6e8ee); overflow: hidden; }
+.arquivo-item__barra > span { display: block; height: 100%; background: var(--color-primary-interactive, #5b7ae6); transition: width .2s; }
+.arquivo-item--erro { border-color: var(--color-danger-base); }
+.arquivo-item--erro .arquivo-item__icone { color: var(--color-primary-headings, #1c2c5c); }
+.arquivo-item--erro .campo__erro { margin-top: var(--spacing-scale-base); }
+.campo-arquivo--previa { margin: var(--spacing-scale-3x) 0 var(--spacing-scale-4x); }

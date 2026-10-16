@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Protótipo publicado só para pessoas com o link: pede aos buscadores que não listem.
+         Tirar no HTML final (checklist de ajustes, item 2.21). -->
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Financeiro · PROAFE v2 (exercício geral) — SIE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Display:wght@600;800&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="pular" href="#conteudo">Pular para o conteúdo</a>
+
+    <!-- Barra do protótipo: troca perfil e cenário para conferir os critérios da EFS. Não faz parte da tela. -->
+    <div class="prototipo-barra" id="prototipo-barra" role="region" aria-label="Controles do protótipo">
+      <strong>Protótipo</strong>
+      <label>
+        Perfil
+        <select id="perfil">
+          <option value="smed">SMED — cadastra e edita</option>
+          <option value="escola">Escola — só consulta (RN013)</option>
+        </select>
+      </label>
+      <label>
+        Cenário
+        <select id="cenario">
+          <option value="completo">Escola com conta, Conselho e exercícios 2025 e 2026</option>
+          <option value="escola-nova-2027">Escola cadastrada depois da importação da planilha de 2027</option>
+          <option value="sem-exercicio">Nenhum exercício aberto (primeiro exercício)</option>
+          <option value="saldos-zerados">Saldos zerados (a conta pode ser inativada)</option>
+          <option value="conta-inativa">Conta bancária inativa (RN004)</option>
+          <option value="sem-conta">Sem conta bancária</option>
+          <option value="sem-conselho">Sem Conselho Escolar (VAL002)</option>
+        </select>
+      </label>
+      <label><input type="checkbox" id="mostrar-comentarios" /> Mostrar comentários</label>
+      <button type="button" id="restaurar" class="prototipo-barra__botao">Restaurar dados</button>
+      <span class="prototipo-barra__nota">O que você grava fica salvo neste navegador.</span>
+      <button type="button" id="esconder-barra" class="prototipo-barra__botao prototipo-barra__esconder"><i class="fa-solid fa-eye-slash" aria-hidden="true"></i> Esconder</button>
+    </div>
+
+    <header class="header container-fluid">
+      <div class="header__marca-area">
+        <a class="header__marca" href="#/" aria-label="SIE SMED — página inicial">
+          <img src="assets/logo-sie-smed.png" alt="" />
+        </a>
+        <button type="button" id="mostrar-barra" class="prototipo-mostrar" hidden><i class="fa-solid fa-eye" aria-hidden="true"></i> Mostrar</button>
+      </div>
+      <nav aria-label="Menu principal">
+        <ul class="header__nav">
+          <li><a href="#/escolas" id="nav-escolas" aria-current="page">Escolas</a></li>
+          <li><a href="#/financeiro" id="nav-financeiro">Financeiro</a></li>
+          <li><a href="#/" data-acao="fora">Acadêmico <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></a></li>
+          <li><a href="#/" data-acao="fora">Administrativo <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></a></li>
+          <li><a href="#/" data-acao="fora">Relatórios <i class="fa-solid fa-chevron-down" aria-hidden="true"></i></a></li>
+          <li><a href="#/" data-acao="fora">Sistema</a></li>
+        </ul>
+      </nav>
+      <div class="header__usuario">
+        <div>
+          <div class="header__usuario-nome">Sandra Rosa Madalena</div>
+          <div class="header__usuario-escola" id="usuario-lotacao">SMED · Gestão Escola</div>
+        </div>
+        <span class="avatar" aria-hidden="true">SM</span>
+      </div>
+    </header>
+
+    <main class="container-fluid" id="principal">
+      <nav aria-label="Você está em">
+        <ol class="breadcrumb">
+          <li><a href="#/escolas" id="migalha-raiz">Escolas</a></li>
+          <li><span aria-current="page" id="migalha-atual">Escola EMEI JP Cirandinha</span></li>
+        </ol>
+      </nav>
+
+      <div class="page-header">
+        <h1 class="page-title">EMEI JP Cirandinha</h1>
+        <div class="page-meta">
+          <span><span class="page-meta__rotulo">Dep. Adm.:</span>Municipal</span>
+          <span><span class="page-meta__rotulo">Vínculo:</span>Pública</span>
+          <span><span class="page-meta__rotulo">INEP</span>31167436</span>
+          <span><span class="page-meta__rotulo">Escola</span>101</span>
+          <span><span class="page-meta__rotulo">Estabelecimento</span>248</span>
+        </div>
+        <div class="page-meta">
+          <span><span class="page-meta__rotulo">Situação</span><span class="tag tag--success">Ativa</span></span>
+          <span><span class="page-meta__rotulo">Credenciamento:</span><span class="tag tag--default-light">Vigente</span></span>
+        </div>
+      </div>
+
+      <div class="layout">
+        <nav aria-label="Cadastro da escola">
+          <ul class="menu-lateral">
+            <li><a href="#/" data-acao="fora">Identificação</a></li>
+            <li><a href="#/" data-acao="fora">Equipe adm. pedagógica</a></li>
+            <li><a href="#/" data-acao="fora">Conselho escolar</a></li>
+            <li><a href="#/" aria-current="page" id="menu-financeiro">Financeiro</a></li>
+            <li><a href="#/" data-acao="fora">Documentos</a></li>
+            <li><a href="#/" data-acao="fora">Infraestrutura</a></li>
+          </ul>
+        </nav>
+
+        <!-- Montado por app.js conforme a rota: #/, #/abrir, #/repasse/novo, #/repasse/{id}, #/repasse/{id}/editar -->
+        <section class="conteudo" id="conteudo" tabindex="-1" aria-live="off"></section>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__principal container-fluid">
+        <div class="footer__instituicao">
+          <img src="assets/brasao-poa.png" alt="Brasão de Porto Alegre" />
+          <div>
+            <p><strong>Prefeitura de Porto Alegre</strong></p>
+            <p><strong>Secretaria Municipal de Educação</strong></p>
+            <p>Rua João Manoel, nº 90 - Centro</p>
+            <p>Porto Alegre, RS.</p>
+          </div>
+        </div>
+        <div class="footer__links">
+          <a href="#/" data-acao="fora">Painel de dados <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+          <a href="#/" data-acao="fora">Manual do usuário <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+        </div>
+      </div>
+      <div class="footer__assinatura container-fluid">
+        <img src="assets/procempa.png" alt="desenvolvimento Procempa" />
+      </div>
+    </footer>
+
+    <!-- Toasts: anunciados por leitor de tela (WCAG 4.1.3). -->
+    <div class="toast-area" role="status" aria-live="polite" id="toasts"></div>
+
+    <!-- Modal de confirmação (ARIA APG — dialog modal: foco preso, Esc fecha, foco volta ao botão). -->
+    <dialog class="modal modal--confirmacao" id="modal" aria-labelledby="modal-titulo" aria-describedby="modal-texto">
+      <form method="dialog">
+        <div class="modal__cabecalho">
+          <h2 class="modal__titulo modal__titulo--perigo" id="modal-titulo"></h2>
+        </div>
+        <div class="modal__corpo">
+          <p id="modal-texto"></p>
+          <p class="campo__ajuda">Esta operação não poderá ser desfeita.</p>
+        </div>
+        <div class="modal__rodape">
+          <button class="btn btn--tertiary" value="cancelar">Cancelar</button>
+          <button class="btn btn--perigo" value="confirmar" id="modal-confirmar"></button>
+        </div>
+      </form>
+    </dialog>
+
+    <script src="dados.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
